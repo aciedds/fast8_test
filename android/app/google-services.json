@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "456359816363",
+    "project_id": "fast8-test-f13e8",
+    "storage_bucket": "fast8-test-f13e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456359816363:android:b1efa3eff2c131d2ad9bee",
+        "android_client_info": {
+          "package_name": "com.example.fast8_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456359816363-i5288rl9go1bs9vae58j872jmt1e40j8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2JZKlUriFBXSAvBWTui8C6vTmV7LYcfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456359816363-i5288rl9go1bs9vae58j872jmt1e40j8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
