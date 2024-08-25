@@ -7,6 +7,8 @@ import 'package:fast8_test/presentation/login/login_view.dart';
 import 'package:fast8_test/presentation/onboarding/auth_middleware.dart';
 import 'package:fast8_test/presentation/onboarding/onboarding_binding.dart';
 import 'package:fast8_test/presentation/onboarding/onboarding_view.dart';
+import 'package:fast8_test/presentation/personal_infomation/personal_information_binding.dart';
+import 'package:fast8_test/presentation/personal_infomation/personal_information_view.dart';
 import 'package:fast8_test/presentation/profile/profile_binding.dart';
 import 'package:fast8_test/presentation/profile/profile_view.dart';
 import 'package:fast8_test/presentation/register/register_binding.dart';
@@ -71,6 +73,12 @@ class Pages {
       page: () => const ResetEmailView(),
       transition: Transition.rightToLeftWithFade,
       binding: ResetEmailBinding(),
+    ),
+    GetPage(
+      name: Routes.PERSONAL_INFORMATION,
+      page: () => const PersonalInformationView(),
+      transition: Transition.rightToLeftWithFade,
+      binding: PersonalInformationBinding(),
     ),
   ];
 }

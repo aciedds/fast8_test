@@ -1,0 +1,444 @@
+import 'package:fast8_test/presentation/personal_infomation/personal_information_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class PersonalInformationView extends GetView<PersonalInformationController> {
+  const PersonalInformationView({super.key});
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      controller.updateDate(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Informasi Pribadi")),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 70,
+                  height: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.deepOrangeAccent,
+                        child: Text(
+                          '1',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Biodata Diri",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.deepOrangeAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Divider(
+                        color: Colors.deepOrangeAccent,
+                        thickness: 2,
+                      ),
+                      SizedBox(height: 40)
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 70,
+                  height: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor:
+                            Colors.deepOrangeAccent.withOpacity(0.5),
+                        child: Text(
+                          '2',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Alamat Pribadi",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.deepOrangeAccent.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Divider(
+                        color: Colors.deepOrangeAccent.withOpacity(0.5),
+                        thickness: 2,
+                      ),
+                      SizedBox(height: 40)
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 70,
+                  height: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor:
+                            Colors.deepOrangeAccent.withOpacity(0.5),
+                        child: Text(
+                          '3',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Informasi Perusahaan",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.deepOrangeAccent.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              children: [
+                const Text(
+                  'NAMA LENGKAP',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: controller.nameTEC,
+                  focusNode: controller.nameFN,
+                  decoration: InputDecoration(
+                    hintText: 'Nama Lengkap',
+                    focusColor: Colors.deepOrangeAccent,
+                    hoverColor: Colors.deepOrangeAccent,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.deepOrangeAccent,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.deepOrangeAccent,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'TANGGAL LAHIR',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: AbsorbPointer(
+                    child: Obx(
+                      () => TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Tanggal Lahir',
+                          focusColor: Colors.deepOrangeAccent,
+                          hoverColor: Colors.deepOrangeAccent,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.deepOrangeAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.deepOrangeAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        controller: TextEditingController(
+                          text: controller.formattedDate,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'JENIS KELAMIN',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(
+                  () => DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      hintText: 'Jenis Kelamin',
+                      focusColor: Colors.deepOrangeAccent,
+                      hoverColor: Colors.deepOrangeAccent,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    value: controller.gender.value.isEmpty
+                        ? null
+                        : controller.gender.value,
+                    items: ['Laki-laki', 'Perempuan']
+                        .map((label) => DropdownMenuItem(
+                              child: Text(label),
+                              value: label,
+                            ))
+                        .toList(),
+                    onChanged: (value) => controller.updateGender(
+                      value ?? 'Laki-laki',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                const Text(
+                  'ALAMAT EMAIL',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.3),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  child: Text(
+                    "Email",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'NOMOR HANDPHONE',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: controller.phoneNumberTEC,
+                  focusNode: controller.phoneNumberFN,
+                  decoration: InputDecoration(
+                    hintText: 'No. HP',
+                    focusColor: Colors.deepOrangeAccent,
+                    hoverColor: Colors.deepOrangeAccent,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.deepOrangeAccent,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.deepOrangeAccent,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'PENDIDIKAN',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(
+                  () => DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      hintText: 'Pilih',
+                      focusColor: Colors.deepOrangeAccent,
+                      hoverColor: Colors.deepOrangeAccent,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    value: controller.education.value.isEmpty
+                        ? null
+                        : controller.education.value,
+                    items:
+                        ['SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'S1', 'S2', 'S3']
+                            .map((label) => DropdownMenuItem(
+                                  child: Text(label),
+                                  value: label,
+                                ))
+                            .toList(),
+                    onChanged: (value) => controller.updateGender(
+                      value ?? '-',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'STATUS PERNIKAHAN',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(
+                      () => DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      hintText: 'Pilih',
+                      focusColor: Colors.deepOrangeAccent,
+                      hoverColor: Colors.deepOrangeAccent,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    value: controller.maritalStatus.value.isEmpty
+                        ? null
+                        : controller.maritalStatus.value,
+                    items:
+                    ['Belum Menikah', 'Menikah', 'Janda', 'Duda']
+                        .map((label) => DropdownMenuItem(
+                      child: Text(label),
+                      value: label,
+                    ))
+                        .toList(),
+                    onChanged: (value) => controller.updateGender(
+                      value ?? '-',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepOrangeAccent,
+                    minimumSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: (){},
+                  child: const Text(
+                    'Lanjutkan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -9,4 +9,5 @@ class Routes {
   static const PROFILE = '/profile';
   static const RESET_PASSWORD = '/reset_password';
   static const RESET_EMAIL = '/reset_email';
+  static const PERSONAL_INFORMATION = '/personal_information';
 }

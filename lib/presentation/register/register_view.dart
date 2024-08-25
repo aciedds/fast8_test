@@ -173,7 +173,6 @@ class RegisterView extends GetView<RegisterController> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-
                 Text(
                   'NOMOR HANDPHONE',
                   style: TextStyle(
