@@ -16,11 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UserData {
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   bool get isEmailVerified => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
+  String get dob => throw _privateConstructorUsedError;
+  String get gender => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserDataCopyWith<UserData> get copyWith =>
@@ -33,11 +35,13 @@ abstract class $UserDataCopyWith<$Res> {
       _$UserDataCopyWithImpl<$Res, UserData>;
   @useResult
   $Res call(
-      {String firstName,
-      String lastName,
+      {String id,
+      String name,
       String email,
       bool isEmailVerified,
-      String id});
+      String dob,
+      String gender,
+      String phoneNumber});
 }
 
 /// @nodoc
@@ -53,20 +57,22 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? id = null,
+    Object? name = null,
     Object? email = null,
     Object? isEmailVerified = null,
-    Object? id = null,
+    Object? dob = null,
+    Object? gender = null,
+    Object? phoneNumber = null,
   }) {
     return _then(_value.copyWith(
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -76,9 +82,17 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.isEmailVerified
           : isEmailVerified // ignore: cast_nullable_to_non_nullable
               as bool,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      dob: null == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as String,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -93,11 +107,13 @@ abstract class _$$UserDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String firstName,
-      String lastName,
+      {String id,
+      String name,
       String email,
       bool isEmailVerified,
-      String id});
+      String dob,
+      String gender,
+      String phoneNumber});
 }
 
 /// @nodoc
@@ -111,20 +127,22 @@ class __$$UserDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? id = null,
+    Object? name = null,
     Object? email = null,
     Object? isEmailVerified = null,
-    Object? id = null,
+    Object? dob = null,
+    Object? gender = null,
+    Object? phoneNumber = null,
   }) {
     return _then(_$UserDataImpl(
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -134,9 +152,17 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.isEmailVerified
           : isEmailVerified // ignore: cast_nullable_to_non_nullable
               as bool,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      dob: null == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as String,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -146,26 +172,32 @@ class __$$UserDataImplCopyWithImpl<$Res>
 
 class _$UserDataImpl implements _UserData {
   const _$UserDataImpl(
-      {required this.firstName,
-      required this.lastName,
+      {required this.id,
+      required this.name,
       required this.email,
       required this.isEmailVerified,
-      required this.id});
+      required this.dob,
+      required this.gender,
+      required this.phoneNumber});
 
   @override
-  final String firstName;
+  final String id;
   @override
-  final String lastName;
+  final String name;
   @override
   final String email;
   @override
   final bool isEmailVerified;
   @override
-  final String id;
+  final String dob;
+  @override
+  final String gender;
+  @override
+  final String phoneNumber;
 
   @override
   String toString() {
-    return 'UserData(firstName: $firstName, lastName: $lastName, email: $email, isEmailVerified: $isEmailVerified, id: $id)';
+    return 'UserData(id: $id, name: $name, email: $email, isEmailVerified: $isEmailVerified, dob: $dob, gender: $gender, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -173,19 +205,20 @@ class _$UserDataImpl implements _UserData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserDataImpl &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.isEmailVerified, isEmailVerified) ||
                 other.isEmailVerified == isEmailVerified) &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.dob, dob) || other.dob == dob) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, firstName, lastName, email, isEmailVerified, id);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, email, isEmailVerified, dob, gender, phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -196,22 +229,28 @@ class _$UserDataImpl implements _UserData {
 
 abstract class _UserData implements UserData {
   const factory _UserData(
-      {required final String firstName,
-      required final String lastName,
+      {required final String id,
+      required final String name,
       required final String email,
       required final bool isEmailVerified,
-      required final String id}) = _$UserDataImpl;
+      required final String dob,
+      required final String gender,
+      required final String phoneNumber}) = _$UserDataImpl;
 
   @override
-  String get firstName;
+  String get id;
   @override
-  String get lastName;
+  String get name;
   @override
   String get email;
   @override
   bool get isEmailVerified;
   @override
-  String get id;
+  String get dob;
+  @override
+  String get gender;
+  @override
+  String get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>

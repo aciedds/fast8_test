@@ -11,14 +11,13 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        forceMaterialTransparency: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.offNamed(Routes.HOME),
         ),
       ),
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -53,34 +52,214 @@ class LoginView extends GetView<LoginController> {
               ),
               const SizedBox(height: 8),
               TextField(
+                controller: controller.emailTEC,
+                focusNode: controller.emailFN,
                 decoration: InputDecoration(
                   hintText: 'ketik email kamu di sini...',
+                  focusColor: Colors.deepOrangeAccent,
+                  hoverColor: Colors.deepOrangeAccent,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrangeAccent),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepOrangeAccent),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
+              Obx(
+                () {
+                  if (controller.passwordFieldVisible.value == 1) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'PASSWORD',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: controller.passwordTEC,
+                          focusNode: controller.passwordFN,
+                          obscureText: controller.isPasswordVisible.value,
+                          decoration: InputDecoration(
+                            hintText: 'ketik password kamu di sini...',
+                            focusColor: Colors.deepOrangeAccent,
+                            hoverColor: Colors.deepOrangeAccent,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.deepOrangeAccent,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.deepOrangeAccent,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                controller.isPasswordVisible.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                controller.isPasswordVisible.value =
+                                    !controller.isPasswordVisible.value;
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (controller.passwordFieldVisible.value == 2) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'PASSWORD',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Obx(() {
+                          return TextField(
+                            controller: controller.passwordTEC,
+                            focusNode: controller.passwordFN,
+                            obscureText: controller.isPasswordVisible.value,
+                            decoration: InputDecoration(
+                              hintText: 'ketik password kamu di sini...',
+                              focusColor: Colors.deepOrangeAccent,
+                              hoverColor: Colors.deepOrangeAccent,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.deepOrangeAccent,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.deepOrangeAccent,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.isPasswordVisible.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  controller.isPasswordVisible.value =
+                                      !controller.isPasswordVisible.value;
+                                },
+                              ),
+                            ),
+                          );
+                        }),
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'CONFIRM PASSWORD',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: controller.confirmPasswordTEC,
+                          focusNode: controller.confirmPasswordFN,
+                          obscureText:
+                              controller.isConfirmPasswordVisible.value,
+                          decoration: InputDecoration(
+                            hintText: 'konfirmasi password kamu di sini...',
+                            focusColor: Colors.deepOrangeAccent,
+                            hoverColor: Colors.deepOrangeAccent,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.deepOrangeAccent,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.deepOrangeAccent,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            suffixIcon: IconButton(
+                                icon: Icon(
+                                  controller.isConfirmPasswordVisible.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  controller.isConfirmPasswordVisible.value =
+                                      !controller
+                                          .isConfirmPasswordVisible.value;
+                                }),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => controller.proceedToLoginOrRegister(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD700), // Customize button color
-                  minimumSize: const Size.fromHeight(50), // Full-width button
+                  backgroundColor: Colors.deepOrangeAccent,
+                  minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const Text(
-                  'Lanjutkan',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Obx(() {
+                  return Text(
+                    controller.passwordFieldVisible.value == 1
+                        ? 'Masuk'
+                        : controller.passwordFieldVisible.value == 2
+                            ? 'Register'
+                            : 'Lanjutkan',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }),
               ),
               const SizedBox(height: 20),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Expanded(
                     child: Divider(
                       color: Colors.grey,
@@ -107,24 +286,7 @@ class LoginView extends GetView<LoginController> {
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.apple, color: Colors.black),
-                label: const Text(
-                  'Lanjutkan dengan Apple',
-                  style: TextStyle(color: Colors.black),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  minimumSize: const Size.fromHeight(50), // Full-width button
-                  side: const BorderSide(color: Colors.black),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () => Get.offNamed(Routes.REGISTER),
+                onPressed: () => controller.loginWithGoogle(context),
                 icon: const Icon(
                   Icons.g_mobiledata,
                   color: Colors.red,
@@ -142,6 +304,7 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

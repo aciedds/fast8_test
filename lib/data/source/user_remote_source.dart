@@ -5,13 +5,13 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class UsersRemote {
-  final FirebaseFirestore _auth;
+  final FirebaseFirestore _fireStore;
 
-  UsersRemote(this._auth);
+  UsersRemote(this._fireStore);
 
   Future<DataState<UserModel>> getUserData(String uid) async {
     try {
-      final result = await _auth.collection('users').doc(uid).get();
+      final result = await _fireStore.collection('users').doc(uid).get();
       if (result.data() != null) {
         return DataState.success(data: UserModel.fromJson(result.data()!));
       } else {
@@ -26,22 +26,20 @@ class UsersRemote {
     required UserModel model,
   }) async {
     try {
-      await _auth.collection('users').doc(model.id).set(model.toJson());
+      await _fireStore.collection('users').doc(model.id).set(model.toJson());
       return DataState.success(data: model);
     } catch (e) {
       return DataState.error(message: "Error: $e");
     }
   }
 
-  Future<DataState<bool>> updateFirstNameLastName({
+  Future<DataState<bool>> updateName({
     required String id,
-    required String firstName,
-    required String lastName,
+    required String name,
   }) async {
     try {
-      await _auth.collection('users').doc(id).update({
-        'firstName': firstName,
-        'lastName': lastName,
+      await _fireStore.collection('users').doc(id).update({
+        'name': name,
       });
       return const DataState.success(data: true);
     } catch (e) {
@@ -54,7 +52,7 @@ class UsersRemote {
     required String email,
   }) async {
     try {
-      await _auth.collection('users').doc(id).update({
+      await _fireStore.collection('users').doc(id).update({
         'email': email,
       });
       return const DataState.success(data: true);
@@ -68,7 +66,7 @@ class UsersRemote {
     required bool isEmailVerified,
   }) async {
     try {
-      await _auth.collection('users').doc(id).update({
+      await _fireStore.collection('users').doc(id).update({
         'isEmailVerified': isEmailVerified,
       });
       return const DataState.success(data: true);
@@ -112,39 +110,19 @@ class UsersRemote {
     }
   }
 
-  Future<DataState<List<UserModel>>> getFilteredUsers({
-    String? firstName,
-    String? lastName,
-    String? email,
-    bool? isEmailVerified,
+  Future<DataState<bool>> checkUserEmailExist({
+    required String email,
   }) async {
     try {
-      Query query = _auth.collection('users');
-
-      if (firstName != null && firstName.isNotEmpty ||
-          lastName != null && lastName.isNotEmpty) {
-        query = query.where(
-          Filter.or(
-            Filter('firstName', isEqualTo: firstName),
-            Filter('lastName', isEqualTo: lastName),
-          ),
-        );
-      }
-
-      if (email != null && email.isNotEmpty) {
-        query = query.where('email', isEqualTo: email);
-      }
-
-      if (isEmailVerified != null) {
-        query = query.where('isEmailVerified', isEqualTo: isEmailVerified);
-      }
+      Query query = _fireStore.collection('users').where(
+            'email',
+            isEqualTo: email,
+          );
 
       final result = await query.get();
       if (result.docs.isNotEmpty) {
-        return DataState.success(
-          data: result.docs
-              .map((e) => UserModel.fromJson(e.data() as Map<String, dynamic>))
-              .toList(),
+        return const DataState.success(
+          data: true,
         );
       } else {
         return const DataState.error(message: "There is no user found");

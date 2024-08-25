@@ -41,38 +41,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<DataState<List<UserData>>> getListUserData({
-    String? firstName,
-    String? lastName,
-    String? email,
-    bool? isEmailVerified,
-  }) async {
-    final result = await _remote.getFilteredUsers(
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      isEmailVerified: isEmailVerified,
-    );
-    return result.when(
-      success: (data) => DataState.success(
-        data: data.map((e) => _mapper.mapModelToEntity(e)).toList(),
-      ),
-      error: (message, data, exception, stackTrace, statusCode) {
-        return DataState.error(message: message);
-      },
-    );
-  }
-
-  @override
-  Future<DataState<bool>> updateFirstNameLastName({
+  Future<DataState<bool>> updateName({
     required String id,
-    required String firstName,
-    required String lastName,
+    required String name,
   }) async =>
-      await _remote.updateFirstNameLastName(
+      await _remote.updateName(
         id: id,
-        firstName: firstName,
-        lastName: lastName,
+        name: name,
       );
 
   @override
@@ -94,4 +69,9 @@ class UserRepositoryImpl implements UserRepository {
         id: id,
         email: email,
       );
+
+  @override
+  Future<DataState<bool>> checkUserEmailExist({required String email}) {
+    return _remote.checkUserEmailExist(email: email);
+  }
 }

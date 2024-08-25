@@ -5,10 +5,12 @@ part 'user_data.freezed.dart';
 @freezed
 class UserData with _$UserData {
   const factory UserData({
-    required String firstName,
-    required String lastName,
+    required String id,
+    required String name,
     required String email,
     required bool isEmailVerified,
-    required String id,
+    required String dob,
+    required String gender,
+    required String phoneNumber,
   }) = _UserData;
 }

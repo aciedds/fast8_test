@@ -6,10 +6,9 @@ abstract class UserRepository {
 
   Future<DataState<UserData>> addUserData(UserData usersEntity);
 
-  Future<DataState<bool>> updateFirstNameLastName({
+  Future<DataState<bool>> updateName({
     required String id,
-    required String firstName,
-    required String lastName,
+    required String name,
   });
 
   Future<DataState<bool>> updateVerifyEmail({
@@ -22,10 +21,5 @@ abstract class UserRepository {
     required String email,
   });
 
-  Future<DataState<List<UserData>>> getListUserData({
-    String? firstName,
-    String? lastName,
-    String? email,
-    bool? isEmailVerified,
-  });
+  Future<DataState<bool>> checkUserEmailExist({required String email});
 }

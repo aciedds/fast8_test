@@ -1,96 +1,121 @@
 import 'package:fast8_test/presentation/profile/profile_controller.dart';
+import 'package:fast8_test/presentation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
 
+  String getInitials(String name) {
+    return name.split(' ').map((word) => word[0]).join();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back navigation
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.offNamed(Routes.HOME),
         ),
       ),
       body: Column(
         children: [
-          SizedBox(height: 20), // Spacer
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.grey[300],
-            child: Text(
-              "A", // First letter of the name
-              style: TextStyle(fontSize: 40, color: Colors.white),
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Achmad Irsyad',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'Masuk dengan Google',
-            style: TextStyle(color: Colors.grey),
-          ),
-          SizedBox(height: 20), // Spacer
-
+          const SizedBox(height: 20), // Spacer
+          Obx(() {
+            return controller.userData.value.maybeWhen(
+              orElse: () => const CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey,
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+              loading: () => CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey,
+                child: Shimmer.fromColors(
+                  baseColor: Colors.black12,
+                  highlightColor: Colors.white12,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                ),
+              ),
+              success: (data) => CircleAvatar(
+                backgroundColor: Colors.grey,
+                radius: 50,
+                child: Text(
+                  getInitials(data.name),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+          }),
+          const SizedBox(height: 10),
+          Obx(() {
+            return controller.userData.value.maybeWhen(
+              orElse: () => const SizedBox.shrink(),
+              loading: () => SizedBox(
+                width: 50,
+                height: 12,
+                child: Shimmer.fromColors(
+                  baseColor: Colors.black12,
+                  highlightColor: Colors.white12,
+                  child: Container(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              success: (data) => Text(
+                data.name,
+                style: const TextStyle(fontSize: 20),
+              ),
+            );
+          }),
+          const SizedBox(height: 20), // Spacer
           Expanded(
             child: ListView(
               children: [
                 ProfileMenuItem(
                   icon: Icons.person,
                   title: 'Informasi Pribadi',
-                  onTap: () {
-                    // Navigate to Personal Information
-                  },
+                  onTap: () {},
                 ),
                 ProfileMenuItem(
                   icon: Icons.article,
                   title: 'Syarat & Ketentuan',
-                  onTap: () {
-                    // Navigate to Terms and Conditions
-                  },
+                  onTap: () {},
                 ),
                 ProfileMenuItem(
                   icon: Icons.help_outline,
                   title: 'Bantuan',
-                  onTap: () {
-                    // Navigate to Help
-                  },
+                  onTap: () {},
                 ),
                 ProfileMenuItem(
                   icon: Icons.privacy_tip_outlined,
                   title: 'Kebijakan Privasi',
-                  onTap: () {
-                    // Navigate to Privacy Policy
-                  },
+                  onTap: () {},
                 ),
                 ProfileMenuItem(
                   icon: Icons.logout,
                   title: 'Log Out',
-                  onTap: () {
-                    // Handle log out
-                  },
-                ),
-                ProfileMenuItem(
-                  icon: Icons.delete_outline,
-                  title: 'Hapus Akun',
-                  onTap: () {
-                    // Handle account deletion
-                  },
+                  onTap: controller.logout,
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 20),
             child: Text(
-              'payuung\nVersi: 1.8.0',
+              'Fast8 Test\nVersi: 0.0.1',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
@@ -117,7 +142,7 @@ class ProfileMenuItem extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: Colors.grey),
       title: Text(title),
-      trailing: Icon(Icons.chevron_right),
+      trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }

@@ -1,73 +1,57 @@
 import 'package:fast8_test/di/injection.dart';
+import 'package:fast8_test/domain/usecase/add_user_data_uc.dart';
 import 'package:fast8_test/domain/usecase/register_uc.dart';
+import 'package:fast8_test/presentation/register/args/register_args.dart';
 import 'package:fast8_test/presentation/routes.dart';
+import 'package:fast8_test/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class RegisterController extends GetxController {
   final RegisterUc registerUc = inject<RegisterUc>();
+  final DialogUtils dialogUtils = inject<DialogUtils>();
+  final AddUserDataUc addUserDataUc = inject<AddUserDataUc>();
 
-  late TextEditingController emailTEC;
-  late FocusNode emailFN;
+  late RegisterArgs registerArgs;
+  late TextEditingController nameTEC;
+  late FocusNode nameFN;
+  late TextEditingController phoneNumberTEC;
+  late FocusNode phoneNumberFN;
 
-  late TextEditingController passwordTEC;
-  late FocusNode passwordFN;
-
-  late TextEditingController firstNameTEC;
-  late FocusNode firstNameFN;
-
-  late TextEditingController lastNameTEC;
-  late FocusNode lastNameFN;
-  final fullName = ''.obs;
-  final selectedDate = Rx<DateTime?>(null);
-  final gender = ''.obs;
-  final phoneNumber = ''.obs;
-  final agreedToTerms = false.obs;
+  Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
+  RxString gender = ''.obs;
+  RxBool agreedToTerms = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    initializeEmailTextField();
-    initializePasswordTextField();
-    initializeFirstNameTextField();
-    initializeLastNameTextField();
+    final args = Get.arguments as RegisterArgs?;
+    if (args != null) {
+      registerArgs = args;
+    }
+
+    initializeNameTextField();
+    initializePhoneNumberTextField();
   }
 
-  void initializeEmailTextField() {
-    emailTEC = TextEditingController();
-    emailFN = FocusNode();
+  void initializeNameTextField() {
+    nameTEC = TextEditingController();
+    nameFN = FocusNode();
   }
 
-  void initializePasswordTextField() {
-    passwordTEC = TextEditingController();
-    passwordFN = FocusNode();
-  }
-
-  void initializeFirstNameTextField() {
-    firstNameTEC = TextEditingController();
-    firstNameFN = FocusNode();
-  }
-
-  void initializeLastNameTextField() {
-    lastNameTEC = TextEditingController();
-    lastNameFN = FocusNode();
+  void initializePhoneNumberTextField() {
+    phoneNumberTEC = TextEditingController();
+    phoneNumberFN = FocusNode();
   }
 
   @override
   void dispose() {
-    emailTEC.dispose();
-    emailFN.dispose();
-    passwordTEC.dispose();
-    passwordFN.dispose();
-    firstNameTEC.dispose();
-    firstNameFN.dispose();
-    lastNameTEC.dispose();
-    lastNameFN.dispose();
     super.dispose();
-  }
-
-  void updateFullName(String name) {
-    fullName.value = name;
+    nameTEC.dispose();
+    nameFN.dispose();
+    phoneNumberTEC.dispose();
+    phoneNumberFN.dispose();
   }
 
   void updateDate(DateTime date) {
@@ -76,10 +60,6 @@ class RegisterController extends GetxController {
 
   void updateGender(String selectedGender) {
     gender.value = selectedGender;
-  }
-
-  void updatePhoneNumber(String phone) {
-    phoneNumber.value = phone;
   }
 
   void toggleAgreement(bool? value) {
@@ -93,24 +73,85 @@ class RegisterController extends GetxController {
   }
 
   bool validateForm() {
-    return fullName.isNotEmpty &&
-        selectedDate.value != null &&
+    return nameTEC.text.isNotEmpty &&
         gender.isNotEmpty &&
-        phoneNumber.isNotEmpty &&
+        phoneNumberTEC.text.isNotEmpty &&
         agreedToTerms.value;
   }
 
-  void register() async {
-    final result = await registerUc.call(
-      email: emailTEC.text,
-      password: passwordTEC.text,
-      firstName: firstNameTEC.text,
-      lastName: lastNameTEC.text,
+  String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    return formatter.format(date);
+  }
+
+  void proceedToRegister(BuildContext context) {
+    final validate = validateForm();
+    if (validate) {
+      registerArgs.when(
+        register: (email, password) => register(
+          context,
+          email: email,
+          password: password,
+        ),
+        googleSso: (email, id) => addDataToFirebase(
+          context,
+          email: email,
+          uid: id,
+        ),
+      );
+    }
+  }
+
+  void addDataToFirebase(
+    BuildContext context, {
+    required String email,
+    required String uid,
+  }) async {
+    dialogUtils.showLoading(context);
+    final result = await addUserDataUc.call(
+      id: uid,
+      name: nameTEC.text,
+      email: email,
+      isEmailVerified: true,
+      dob: formatDate(selectedDate.value!),
+      gender: gender.value,
+      phoneNumber: phoneNumberTEC.text,
     );
     result.when(
-      success: (data) => Get.offAllNamed(Routes.HOME),
-      error: (message, data, exception, stackTrace, statusCode) =>
-          Get.snackbar("Error", message),
+      success: (data) {
+        dialogUtils.hideLoading(context);
+        Get.offAllNamed(Routes.HOME);
+      },
+      error: (message, data, exception, stackTrace, statusCode) {
+        dialogUtils.hideLoading(context);
+        Get.snackbar("Error", message);
+      },
+    );
+  }
+
+  void register(
+    BuildContext context, {
+    required String email,
+    required String password,
+  }) async {
+    dialogUtils.showLoading(context);
+    final result = await registerUc.call(
+      email: email,
+      password: password,
+      name: nameTEC.text,
+      dob: formatDate(selectedDate.value!),
+      gender: gender.value,
+      phoneNumber: phoneNumberTEC.text,
+    );
+    result.when(
+      success: (data) {
+        dialogUtils.hideLoading(context);
+        Get.offAllNamed(Routes.HOME);
+      },
+      error: (message, data, exception, stackTrace, statusCode) {
+        dialogUtils.hideLoading(context);
+        Get.snackbar("Error", message);
+      },
     );
   }
 }

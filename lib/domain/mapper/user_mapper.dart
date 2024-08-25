@@ -6,21 +6,25 @@ import 'package:injectable/injectable.dart';
 class UserMapper {
   UserData mapModelToEntity(UserModel data) {
     return UserData(
-      firstName: data.firstName ?? '',
-      lastName: data.lastName ?? '',
-      id: data.id ?? '',
+      id: data.id ?? '-',
+      name: data.name ?? '-',
+      email: data.email ?? '-',
       isEmailVerified: data.isEmailVerified ?? false,
-      email: data.email ?? '',
+      dob: data.dob ?? '-',
+      gender: data.gender ?? '-',
+      phoneNumber: data.phoneNumber ?? '-',
     );
   }
 
   UserModel mapEntityToModel(UserData data) {
     return UserModel(
-      firstName: data.firstName,
-      lastName: data.lastName,
       id: data.id,
+      name: data.name,
       email: data.email,
       isEmailVerified: data.isEmailVerified,
+      dob: data.dob,
+      gender: data.gender,
+      phoneNumber: data.phoneNumber,
     );
   }
 }

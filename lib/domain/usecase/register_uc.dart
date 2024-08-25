@@ -15,8 +15,10 @@ class RegisterUc {
   Future<DataState<AuthData>> call({
     required String email,
     required String password,
-    required String firstName,
-    required String lastName,
+    required String name,
+    required String dob,
+    required String gender,
+    required String phoneNumber,
   }) async {
     final authResult = await _authRepository.registerWithAuthEmailPassword(
       email: email,
@@ -26,11 +28,13 @@ class RegisterUc {
       success: (data) async {
         await Future.wait([
           _addDataToFireStore(
-            firstName: firstName,
-            lastName: lastName,
             authData: data,
+            name: name,
+            dob: dob,
+            gender: gender,
+            phoneNumber: phoneNumber,
           ),
-          _updateName('$firstName $lastName'),
+          _updateName(name),
         ]);
         return DataState.success(data: data);
       },
@@ -42,16 +46,20 @@ class RegisterUc {
 
   Future<DataState<AuthData>> _addDataToFireStore({
     required AuthData authData,
-    required String firstName,
-    required String lastName,
+    required String name,
+    required String dob,
+    required String gender,
+    required String phoneNumber,
   }) async {
     final result = await _userRepository.addUserData(
       UserData(
-        firstName: firstName,
-        lastName: lastName,
+        name: name,
         isEmailVerified: authData.emailVerified,
         email: authData.email,
         id: authData.uid,
+        dob: dob,
+        gender: gender,
+        phoneNumber: phoneNumber,
       ),
     );
     return result.when(

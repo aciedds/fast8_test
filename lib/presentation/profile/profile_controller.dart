@@ -2,19 +2,14 @@ import 'package:fast8_test/di/injection.dart';
 import 'package:fast8_test/domain/entity/user/user_data.dart';
 import 'package:fast8_test/domain/usecase/get_current_user_uc.dart';
 import 'package:fast8_test/domain/usecase/logout_uc.dart';
-import 'package:fast8_test/domain/usecase/send_email_verification_uc.dart';
-import 'package:fast8_test/domain/usecase/update_first_name_last_name_uc.dart';
 import 'package:fast8_test/presentation/routes.dart';
+import 'package:fast8_test/state/view_state/view_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
-  final LogoutUc logoutUc = inject<LogoutUc>();
-  final SendEmailVerificationUc verifyEmailUc =
-      inject<SendEmailVerificationUc>();
-  final UpdateFirstNameLastNameUc updateFirstNameLastNameUc =
-      inject<UpdateFirstNameLastNameUc>();
   final GetCurrentUserUc getCurrentUserUc = inject<GetCurrentUserUc>();
+  final LogoutUc logoutUc = inject<LogoutUc>();
 
   late TextEditingController firstNameTEC;
   late FocusNode firstNameFN;
@@ -22,27 +17,12 @@ class ProfileController extends GetxController {
   late FocusNode lastNameFN;
 
   RxBool isEditingName = false.obs;
-
-  RxString firstName = ''.obs;
-  RxString lastName = ''.obs;
-  RxString imageUrl = ''.obs;
-  RxString email = ''.obs;
-  RxBool isEmailVerified = false.obs;
-  RxString id = ''.obs;
+  Rx<ViewState<UserData>> userData = const ViewState<UserData>.initial().obs;
 
   @override
   void onInit() {
     super.onInit();
-    final args = Get.arguments as UserData?;
-    if (args != null) {
-      firstName.value = args.firstName;
-      lastName.value = args.lastName;
-      email.value = args.email;
-      isEmailVerified.value = args.isEmailVerified;
-      id.value = args.id;
-    } else {
-      getProfile();
-    }
+    getProfile();
     initializeFirstNameTexField();
     initializeLastNameTextField();
   }
@@ -76,59 +56,14 @@ class ProfileController extends GetxController {
     );
   }
 
-  void updateProfile() async {
-    final result = await updateFirstNameLastNameUc.call(
-      firstName: editedFirstName,
-      lastName: editedLastName,
-      id: id.value,
-    );
-    result.when(
-      success: (data) {
-        Get.snackbar("Success", "Success Edit Profile");
-        Get.offNamed(Routes.HOME);
-      },
-      error: (message, data, exception, stackTrace, statusCode) {
-        Get.snackbar("Failed update profile", message);
-      },
-    );
-  }
-
-  void verifyEmail() async {
-    final result = await verifyEmailUc.call(id.value);
-    result.when(
-      success: (data) => Get.snackbar("Success", "Please check your email"),
-      error: (message, data, exception, stackTrace, statusCode) =>
-          Get.snackbar("Failed", message),
-    );
-  }
-
   void getProfile() async {
+    userData.value = const ViewState.loading();
     final result = await getCurrentUserUc.call();
     result.when(
-      success: (data) {
-        firstName.value = data.firstName;
-        lastName.value = data.lastName;
-        email.value = data.email;
-        isEmailVerified.value = data.isEmailVerified;
-        id.value = data.id;
-      },
+      success: (data) => userData.value = ViewState.success(data: data),
       error: (message, data, exception, stackTrace, statusCode) {
         Get.snackbar("Error", message);
       },
     );
-  }
-
-  String get editedFirstName {
-    if (firstNameTEC.text.trim().isEmpty) {
-      return firstName.value;
-    }
-    return firstNameTEC.text.trim();
-  }
-
-  String get editedLastName {
-    if (lastNameTEC.text.trim().isEmpty) {
-      return lastName.value;
-    }
-    return lastNameTEC.text.trim();
   }
 }
