@@ -1,3 +1,9 @@
+import 'package:fast8_test/presentation/address_information/address_information_binding.dart';
+import 'package:fast8_test/presentation/address_information/address_information_view.dart';
+import 'package:fast8_test/presentation/biodata_information/biodata_information_binding.dart';
+import 'package:fast8_test/presentation/biodata_information/biodata_information_view.dart';
+import 'package:fast8_test/presentation/company_information/company_information_binding.dart';
+import 'package:fast8_test/presentation/company_information/company_information_view.dart';
 import 'package:fast8_test/presentation/forgot_password/forgot_password_binding.dart';
 import 'package:fast8_test/presentation/forgot_password/forgot_password_view.dart';
 import 'package:fast8_test/presentation/home/home_binding.dart';
@@ -7,8 +13,6 @@ import 'package:fast8_test/presentation/login/login_view.dart';
 import 'package:fast8_test/presentation/onboarding/auth_middleware.dart';
 import 'package:fast8_test/presentation/onboarding/onboarding_binding.dart';
 import 'package:fast8_test/presentation/onboarding/onboarding_view.dart';
-import 'package:fast8_test/presentation/personal_infomation/personal_information_binding.dart';
-import 'package:fast8_test/presentation/personal_infomation/personal_information_view.dart';
 import 'package:fast8_test/presentation/profile/profile_binding.dart';
 import 'package:fast8_test/presentation/profile/profile_view.dart';
 import 'package:fast8_test/presentation/register/register_binding.dart';
@@ -75,10 +79,22 @@ class Pages {
       binding: ResetEmailBinding(),
     ),
     GetPage(
-      name: Routes.PERSONAL_INFORMATION,
-      page: () => const PersonalInformationView(),
+      name: Routes.BIODATA_INFORMATION,
+      page: () => const BiodataInformationView(),
       transition: Transition.rightToLeftWithFade,
-      binding: PersonalInformationBinding(),
+      binding: BiodataInformationBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDRESS_INFORMATION,
+      page: () => const AddressInformationView(),
+      transition: Transition.rightToLeftWithFade,
+      binding: AddressInformationBinding(),
+    ),
+    GetPage(
+      name: Routes.COMPANY_INFORMATION,
+      page: () => const CompanyInformationView(),
+      transition: Transition.rightToLeftWithFade,
+      binding: CompanyInformationBinding(),
     ),
   ];
 }

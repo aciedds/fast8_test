@@ -13,13 +13,13 @@ class UserModel {
   final String? phoneNumber;
 
   UserModel({
-    required this.id,
-    required this.name,
-    required this.isEmailVerified,
-    required this.email,
-    required this.dob,
-    required this.gender,
-    required this.phoneNumber,
+    this.id,
+    this.name,
+    this.isEmailVerified,
+    this.email,
+    this.dob,
+    this.gender,
+    this.phoneNumber,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

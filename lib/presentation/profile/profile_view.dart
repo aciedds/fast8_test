@@ -87,7 +87,7 @@ class ProfileView extends GetView<ProfileController> {
                 ProfileMenuItem(
                   icon: Icons.person,
                   title: 'Informasi Pribadi',
-                  onTap: () => Get.offNamed(Routes.PERSONAL_INFORMATION),
+                  onTap: () => Get.offNamed(Routes.BIODATA_INFORMATION),
                 ),
                 ProfileMenuItem(
                   icon: Icons.article,

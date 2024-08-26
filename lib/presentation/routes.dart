@@ -9,5 +9,7 @@ class Routes {
   static const PROFILE = '/profile';
   static const RESET_PASSWORD = '/reset_password';
   static const RESET_EMAIL = '/reset_email';
-  static const PERSONAL_INFORMATION = '/personal_information';
+  static const BIODATA_INFORMATION = '/biodata_information';
+  static const ADDRESS_INFORMATION = '/address_information';
+  static const COMPANY_INFORMATION = '/company_information';
 }

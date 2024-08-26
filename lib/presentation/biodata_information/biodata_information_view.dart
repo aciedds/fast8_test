@@ -1,14 +1,16 @@
-import 'package:fast8_test/presentation/personal_infomation/personal_information_controller.dart';
+import 'package:fast8_test/presentation/biodata_information/biodata_information_controller.dart';
+import 'package:fast8_test/presentation/routes.dart';
+import 'package:fast8_test/presentation/widget/custom_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PersonalInformationView extends GetView<PersonalInformationController> {
-  const PersonalInformationView({super.key});
+class BiodataInformationView extends GetView<BiodataInformationController> {
+  const BiodataInformationView({super.key});
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: controller.selectedDate.value ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
@@ -20,136 +22,27 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Informasi Pribadi")),
+      appBar: AppBar(
+        title: const Text("Informasi Pribadi"),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Get.offNamed(Routes.PROFILE),
+          icon: const Icon(
+            Icons.chevron_left,
+          ),
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 70,
-                  height: 80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.deepOrangeAccent,
-                        child: Text(
-                          '1',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Biodata Diri",
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.deepOrangeAccent,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: Colors.deepOrangeAccent,
-                        thickness: 2,
-                      ),
-                      SizedBox(height: 40)
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 70,
-                  height: 80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor:
-                            Colors.deepOrangeAccent.withOpacity(0.5),
-                        child: Text(
-                          '2',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Alamat Pribadi",
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.deepOrangeAccent.withOpacity(0.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: Colors.deepOrangeAccent.withOpacity(0.5),
-                        thickness: 2,
-                      ),
-                      SizedBox(height: 40)
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 70,
-                  height: 80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor:
-                            Colors.deepOrangeAccent.withOpacity(0.5),
-                        child: Text(
-                          '3',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Informasi Perusahaan",
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.deepOrangeAccent.withOpacity(0.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          CustomStepper(
+            currentStep: 0,
+            stepDescriptions: [
+              'Biodata Diri',
+              'Alamat Pribadi',
+              'Informasi Perusahaan',
+            ],
           ),
           Expanded(
             child: ListView(
@@ -288,13 +181,15 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
                       color: Colors.grey,
                     ),
                   ),
-                  child: Text(
-                    "Email",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
-                  ),
+                  child: Obx(() {
+                    return Text(
+                      controller.email.value != '' ? controller.email.value : 'Email',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    );
+                  }),
                 ),
                 const SizedBox(height: 16.0),
                 Text(
@@ -367,7 +262,7 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
                                   value: label,
                                 ))
                             .toList(),
-                    onChanged: (value) => controller.updateGender(
+                    onChanged: (value) => controller.updateEducation(
                       value ?? '-',
                     ),
                   ),
@@ -383,7 +278,7 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
                 ),
                 const SizedBox(height: 8),
                 Obx(
-                      () => DropdownButtonFormField<String>(
+                  () => DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       hintText: 'Pilih',
                       focusColor: Colors.deepOrangeAccent,
@@ -404,14 +299,13 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
                     value: controller.maritalStatus.value.isEmpty
                         ? null
                         : controller.maritalStatus.value,
-                    items:
-                    ['Belum Menikah', 'Menikah', 'Janda', 'Duda']
+                    items: ['Belum Menikah', 'Menikah', 'Janda', 'Duda']
                         .map((label) => DropdownMenuItem(
-                      child: Text(label),
-                      value: label,
-                    ))
+                              child: Text(label),
+                              value: label,
+                            ))
                         .toList(),
-                    onChanged: (value) => controller.updateGender(
+                    onChanged: (value) => controller.updateMaritalStatus(
                       value ?? '-',
                     ),
                   ),
@@ -425,7 +319,7 @@ class PersonalInformationView extends GetView<PersonalInformationController> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: (){},
+                  onPressed: controller.continueToAddressInformation,
                   child: const Text(
                     'Lanjutkan',
                     style: TextStyle(
